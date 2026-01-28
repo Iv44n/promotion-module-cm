@@ -1,15 +1,13 @@
 import { Module } from '@nestjs/common';
-import { DrizzleModule } from './database/drizzle.module';
 import { ConfigModule } from '@nestjs/config';
+import { PromotionsModule } from './promotions/promotions.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    DrizzleModule
+    PromotionsModule,
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}
