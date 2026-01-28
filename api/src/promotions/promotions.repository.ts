@@ -11,7 +11,7 @@ export class PromotionsRepository {
   constructor(
     @Inject(DRIZZLE_TOKEN)
     private readonly db: NeonHttpDatabase<typeof schema>,
-  ) { }
+  ) {}
 
   async getAllPromotions(): Promise<PromotionResponseDTO[]> {
     return await this.db
