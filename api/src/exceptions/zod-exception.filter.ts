@@ -12,8 +12,6 @@ export class ZodExceptionFilter implements ExceptionFilter {
       message: err.message,
     }));
 
-    console.log(errors);
-
     response.status(400).json({
       statusCode: 400,
       message: 'Error de validación',

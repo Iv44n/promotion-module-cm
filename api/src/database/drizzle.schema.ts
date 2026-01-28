@@ -10,8 +10,6 @@ import {
   jsonb,
 } from 'drizzle-orm/pg-core';
 
-import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
-
 export const promotionConditionsTypesEnum = pgEnum(
   'promotion_conditions_types',
   ['TARGET_CATEGORY', 'MIN_AMOUNT'],
