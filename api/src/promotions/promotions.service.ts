@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PromotionResponseDTO } from 'src/dto/response/PromotionResponseDTO';
-import { eq } from 'drizzle-orm';
 import { PromotionsRepository } from './promotions.repository';
+import { CreatePromotionRequestDto } from 'src/dto/request/CreatePromotionRequestDto';
 
 @Injectable()
 export class PromotionsService {
@@ -13,5 +13,11 @@ export class PromotionsService {
 
   async getPromotionById(id: string): Promise<PromotionResponseDTO> {
     return await this.promotionsRepository.getPromotionById(id);
+  }
+
+  async createPromotion(
+    promotion: CreatePromotionRequestDto,
+  ): Promise<PromotionResponseDTO> {
+    return await this.promotionsRepository.createPromotion(promotion);
   }
 }
