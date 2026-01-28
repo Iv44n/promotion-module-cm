@@ -8,7 +8,7 @@ const DATABASE_URL = 'DATABASE_URL';
 export const DrizzleAsyncProvider = {
   provide: DRIZZLE_TOKEN,
   inject: [ConfigService],
-  useFactory: async (config: ConfigService) => {
+  useFactory: (config: ConfigService) => {
     const databaseUrl = config.get<string>(DATABASE_URL);
 
     if (!databaseUrl) {
