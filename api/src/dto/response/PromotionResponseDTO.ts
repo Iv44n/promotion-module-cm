@@ -1,6 +1,6 @@
 import z from 'zod';
 
-export const PromotionResponseDTOSchema = z.object({
+export const promotionResponseDTOSchema = z.object({
   id: z.uuid(),
   name: z.string(),
   description: z.string().optional(),
@@ -9,4 +9,4 @@ export const PromotionResponseDTOSchema = z.object({
   endDate: z.date(),
 });
 
-export type PromotionResponseDTO = z.infer<typeof PromotionResponseDTOSchema>;
+export type PromotionResponseDTO = z.infer<typeof promotionResponseDTOSchema>;
