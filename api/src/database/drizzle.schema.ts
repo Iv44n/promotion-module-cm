@@ -24,7 +24,7 @@ export const promotionActionsTypesEnum = pgEnum('promotion_actions_types', [
 
 export const promotionTypes = pgTable('type_promotions', {
   id: serial('id').primaryKey(),
-  type: text('type').notNull().default('CUSTOM'),
+  type: text('type').notNull(),
   description: text('description').notNull(),
   action_type: promotionActionsTypesEnum('action_type').notNull(),
   condition_type: promotionConditionsTypesEnum('condition_type').notNull(),
@@ -35,7 +35,6 @@ export const promotions = pgTable('promotions', {
   name: text('name').notNull(),
   description: text('description').notNull(),
   promotion_type: integer('promotion_type')
-    .notNull()
     .references(() => promotionTypes.id),
   start_date: timestamp('start_date').notNull(),
   end_date: timestamp('end_date').notNull(),
