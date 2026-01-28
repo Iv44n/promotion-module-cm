@@ -7,6 +7,7 @@ import {
   pgEnum,
   uuid,
   integer,
+  jsonb
 } from 'drizzle-orm/pg-core';
 
 export const promotionConditionsTypesEnum = pgEnum(
@@ -21,13 +22,14 @@ export const promotionActionsTypesEnum = pgEnum('promotion_actions_types', [
 
 export const promotionTypes = pgTable('type_promotions', {
   id: serial('id').primaryKey(),
-  type: text('type').notNull(),
+  type: text('type').notNull().default('CUSTOM'),
+  description: text('description').notNull(),
   action_type: promotionActionsTypesEnum('action_type').notNull(),
   condition_type: promotionConditionsTypesEnum('condition_type').notNull(),
 });
 
 export const promotions = pgTable('promotions', {
-  id: uuid('id').primaryKey(),
+  id: uuid('id').defaultRandom().primaryKey(),
   name: text('name').notNull(),
   description: text('description').notNull(),
   promotion_type: integer('promotion_type')
@@ -46,6 +48,7 @@ export const promotionConditions = pgTable('promotion_conditions', {
     .notNull()
     .references(() => promotions.id),
   condition_type: promotionConditionsTypesEnum('condition_type').notNull(),
+  configuration: jsonb('configuration').notNull(),
   created_at: timestamp('created_at').notNull().defaultNow(),
   updated_at: timestamp('updated_at').notNull().defaultNow(),
 });
@@ -56,6 +59,7 @@ export const promotionActions = pgTable('promotion_actions', {
     .notNull()
     .references(() => promotions.id),
   action_type: promotionActionsTypesEnum('action_type').notNull(),
+  configuration: jsonb('configuration').notNull(),
   created_at: timestamp('created_at').notNull().defaultNow(),
   updated_at: timestamp('updated_at').notNull().defaultNow(),
 });
