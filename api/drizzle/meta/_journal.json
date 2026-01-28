@@ -15,6 +15,13 @@
       "when": 1769610596896,
       "tag": "0001_lying_storm",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1769611249291,
+      "tag": "0002_spotty_kinsey_walden",
+      "breakpoints": true
     }
   ]
 }

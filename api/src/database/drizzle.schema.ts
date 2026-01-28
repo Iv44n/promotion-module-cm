@@ -7,7 +7,7 @@ import {
   pgEnum,
   uuid,
   integer,
-  jsonb
+  jsonb,
 } from 'drizzle-orm/pg-core';
 
 export const promotionConditionsTypesEnum = pgEnum(
@@ -49,8 +49,6 @@ export const promotionConditions = pgTable('promotion_conditions', {
     .references(() => promotions.id),
   condition_type: promotionConditionsTypesEnum('condition_type').notNull(),
   configuration: jsonb('configuration').notNull(),
-  created_at: timestamp('created_at').notNull().defaultNow(),
-  updated_at: timestamp('updated_at').notNull().defaultNow(),
 });
 
 export const promotionActions = pgTable('promotion_actions', {
@@ -60,6 +58,4 @@ export const promotionActions = pgTable('promotion_actions', {
     .references(() => promotions.id),
   action_type: promotionActionsTypesEnum('action_type').notNull(),
   configuration: jsonb('configuration').notNull(),
-  created_at: timestamp('created_at').notNull().defaultNow(),
-  updated_at: timestamp('updated_at').notNull().defaultNow(),
 });
