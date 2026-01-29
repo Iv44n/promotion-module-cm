@@ -1,4 +1,3 @@
-import { ConditionsService } from './conditions.service';
 import { Controller, Get } from '@nestjs/common';
 import { ConditionsRepository } from './conditions.repository';
 
@@ -7,9 +6,7 @@ export class ConditionsController {
   constructor(private readonly conditionsRepository: ConditionsRepository) {}
 
   @Get()
-  async getAllConditions() {
-    const conditions = this.conditionsRepository.getAllConditions();
-
-    return conditions;
+  getAllConditions() {
+    return this.conditionsRepository.getAllConditions();
   }
 }

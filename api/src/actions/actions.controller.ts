@@ -1,16 +1,12 @@
-import { Controller, Get, Inject, Post } from '@nestjs/common';
-import { get } from 'http';
-import { ActionsRepository } from 'src/actions/actions.repository';
-import { PromotionsRepository } from 'src/promotions/promotions.repository';
+import { Controller, Get } from '@nestjs/common';
+import { ActionsService } from './actions.service';
 
 @Controller('actions')
 export class ActionsController {
-  constructor(private readonly actionsRepository: ActionsRepository) {}
+  constructor(private readonly actionsService: ActionsService) {}
 
   @Get()
   async getAllActions() {
-    const actions = await this.actionsRepository.getActionTypes();
-
-    return actions;
+    return this.actionsService.getActionTypes();
   }
 }
