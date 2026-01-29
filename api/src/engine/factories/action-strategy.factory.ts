@@ -4,7 +4,6 @@ import {
   ACTION_STRATEGIES,
 } from '../strategies/actions';
 
-
 @Injectable()
 export class ActionStrategyFactory {
   private readonly strategyMap: Map<string, PromotionActionStrategy>;
@@ -23,7 +22,6 @@ export class ActionStrategyFactory {
     return this.strategyMap.get(type);
   }
 
- 
   getRegisteredTypes(): string[] {
     return Array.from(this.strategyMap.keys());
   }

@@ -51,7 +51,6 @@ export class PromotionEngineService {
     cart: Cart,
     promotion: PromotionWithDetails,
   ): boolean {
-
     if (promotion.conditions.length === 0) {
       return true;
     }

@@ -1,8 +1,7 @@
 import { Cart, AppliedDiscount } from '../../../interfaces';
 
 export interface PromotionActionStrategy {
-
-    readonly type: 'PERCENTAGE_DISCOUNT' | 'FIXED_DISCOUNT';
+  readonly type: 'PERCENTAGE_DISCOUNT' | 'FIXED_DISCOUNT';
 
   apply(
     cart: Cart,
