@@ -1,16 +1,16 @@
-import { NeonHttpDatabase } from 'drizzle-orm/neon-http';
-import * as schema from '../database/drizzle.schema';
-import { PromotionResponseDTO } from 'src/dto/response/PromotionResponseDTO';
+import * as schema from '@/database/drizzle.schema';
+import { PromotionResponseDTO } from '@/dto/response/PromotionResponseDTO';
 import { Inject, Injectable } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
-import { DRIZZLE_TOKEN } from 'src/database/drizzle.provider';
-import { CreatePromotionRequestDto } from 'src/dto/request/CreatePromotionRequestDto';
+import { DRIZZLE_TOKEN } from '@/database/drizzle.provider';
+import { CreatePromotionRequestDto } from '@/dto/request/CreatePromotionRequestDto';
+import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 
 @Injectable()
 export class PromotionsRepository {
   constructor(
     @Inject(DRIZZLE_TOKEN)
-    private readonly db: NeonHttpDatabase<typeof schema>,
+    private readonly db: NodePgDatabase<typeof schema>,
   ) {}
 
   async getAllPromotions(): Promise<PromotionResponseDTO[]> {
