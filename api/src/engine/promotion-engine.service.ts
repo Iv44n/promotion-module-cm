@@ -109,6 +109,7 @@ export class PromotionEngineService {
         action.configuration,
         promotion.id,
         promotion.name,
+        promotion.conditions,
       );
       discounts.push(discount);
     }

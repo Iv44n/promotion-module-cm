@@ -1,5 +1,10 @@
 import { Cart, AppliedDiscount } from '../../../interfaces';
 
+export interface PromotionConditionInfo {
+  conditionType: 'TARGET_CATEGORY' | 'MIN_AMOUNT';
+  configuration: unknown;
+}
+
 export interface PromotionActionStrategy {
   readonly type: 'PERCENTAGE_DISCOUNT' | 'FIXED_DISCOUNT';
 
@@ -8,6 +13,7 @@ export interface PromotionActionStrategy {
     config: unknown,
     promotionId: string,
     promotionName: string,
+    conditions?: PromotionConditionInfo[],
   ): AppliedDiscount;
 }
 
