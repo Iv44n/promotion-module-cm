@@ -4,13 +4,15 @@ import {
 } from '@/modules/promotion-engine/rules';
 import z from 'zod';
 
-export const createPromotionRequestDto = z.object({
+export const promotionSchemaBase = z.object({
   name: z.string().min(1),
   description: z.string().min(1),
   startDate: z.coerce.date().min(new Date()),
   endDate: z.coerce.date().min(new Date()),
   isActive: z.boolean().default(true),
+});
 
+export const createPromotionRequestDto = promotionSchemaBase.extend({
   condition: conditionSchema,
   action: actionSchema,
 });

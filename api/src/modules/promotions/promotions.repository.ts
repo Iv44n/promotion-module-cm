@@ -10,6 +10,7 @@ import {
 } from './entities/promotion-rules.entity';
 import { PromotionResponseDTO } from './dto/response/promotion-response.dto';
 import { CreatePromotionRequestDto } from './dto/request/create-promotion.dto';
+import { UpdatePromotionRequestDto } from './dto/request/update-promotion.dto';
 
 @Injectable()
 export class PromotionsRepository {
@@ -102,5 +103,23 @@ export class PromotionsRepository {
     }
 
     return deletedPromotionId;
+  }
+
+  async updatePromotion(promotionId: string, data: UpdatePromotionRequestDto) {
+    const updatedPromotion = await this.db
+      .update(promotions)
+      .set({
+        ...data,
+        updated_at: new Date(),
+      })
+      .where(eq(promotions.id, promotionId))
+      .returning()
+      .then((result) => result[0]);
+
+    if (!updatedPromotion) {
+      throw new Error('Promotion not found');
+    }
+
+    return updatedPromotion;
   }
 }
