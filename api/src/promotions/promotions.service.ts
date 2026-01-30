@@ -21,10 +21,7 @@ export class PromotionsService {
     return await this.promotionsRepository.createPromotion(promotion);
   }
 
-  async togglePromotionStatus(
-    id: string,
-    isActive: boolean,
-  ): Promise<PromotionResponseDTO> {
+  async togglePromotionStatus(id: string, isActive: boolean): Promise<{ isActive: boolean }> {
     return await this.promotionsRepository.togglePromotionStatus(id, isActive);
   }
 
