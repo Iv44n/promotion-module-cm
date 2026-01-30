@@ -3,7 +3,7 @@ import { promotions } from './promotion.entity';
 import {
   promotionActionsTypesEnum,
   promotionConditionsTypesEnum,
-} from '@/database/drizzle.schema';
+} from './promotion-metadatas.entity';
 
 export const promotionConditions = pgTable('promotion_conditions', {
   id: serial('id').primaryKey(),

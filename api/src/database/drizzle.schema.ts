@@ -1,14 +1,8 @@
-import { serial, text, pgTable, pgEnum } from 'drizzle-orm/pg-core';
-
-export const promotionConditionsTypesEnum = pgEnum(
-  'promotion_conditions_types',
-  ['TARGET_CATEGORY', 'MIN_AMOUNT'],
-);
-
-export const promotionActionsTypesEnum = pgEnum('promotion_actions_types', [
-  'PERCENTAGE_DISCOUNT',
-  'FIXED_DISCOUNT',
-]);
+import {
+  promotionActionsTypesEnum,
+  promotionConditionsTypesEnum,
+} from '@/modules/promotions/entities/promotion-metadatas.entity';
+import { serial, text, pgTable } from 'drizzle-orm/pg-core';
 
 export const promotionTypes = pgTable('type_promotions', {
   id: serial('id').primaryKey(),
@@ -18,11 +12,6 @@ export const promotionTypes = pgTable('type_promotions', {
   condition_type: promotionConditionsTypesEnum('condition_type').notNull(),
 });
 
-export type PromotionConditionType =
-  (typeof promotionConditionsTypesEnum.enumValues)[number];
-
-export type PromotionActionType =
-  (typeof promotionActionsTypesEnum.enumValues)[number];
-
+export * from '@/modules/promotions/entities/promotion-metadatas.entity';
 export * from '@/modules/promotions/entities/promotion.entity';
 export * from '@/modules/promotions/entities/promotion-rules.entity';
