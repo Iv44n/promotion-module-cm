@@ -7,6 +7,7 @@ import { PromotionActionStrategy } from './actions/base-action.strategy';
 import { Injectable } from '@nestjs/common';
 import { TargetCategoryStrategy } from './conditions/target-category.strategy';
 import { PercentageDiscountStrategy } from './actions/percentage-discount.strategy';
+import { MinAmountStrategy } from './conditions/min-amount.strategy';
 
 @Injectable()
 export class StrategyRegistry {
@@ -21,6 +22,7 @@ export class StrategyRegistry {
     this.actionStrategies = new Map();
 
     this.registerConditionStrategy(new TargetCategoryStrategy());
+    this.registerConditionStrategy(new MinAmountStrategy());
     this.registerActionStrategy(new PercentageDiscountStrategy());
   }
 
