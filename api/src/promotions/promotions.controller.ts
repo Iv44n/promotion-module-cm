@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { PromotionsService } from './promotions.service';
 import { PromotionResponseDTO } from 'src/dto/response/PromotionResponseDTO';
 import {
@@ -22,5 +32,22 @@ export class PromotionsController {
     const promotion = createPromotionRequestDto.parse(body);
 
     return await this.promotionsService.createPromotion(promotion);
+  }
+
+  @Patch(':id/status')
+  async updatePromotionStatus(
+    @Param('id') id: string,
+    @Body() body: { isActive: boolean },
+  ): Promise<PromotionResponseDTO> {
+    return await this.promotionsService.togglePromotionStatus(
+      id,
+      body.isActive,
+    );
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async deletePromotion(@Param('id') id: string): Promise<void> {
+    return await this.promotionsService.deletePromotion(id);
   }
 }

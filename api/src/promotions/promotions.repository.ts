@@ -90,4 +90,39 @@ export class PromotionsRepository {
       };
     });
   }
+
+  async togglePromotionStatus(
+    id: string,
+    isActive: boolean,
+  ): Promise<PromotionResponseDTO> {
+    const [updatedPromotion] = await this.db
+      .update(schema.promotions)
+      .set({ isActive, updated_at: new Date() })
+      .where(eq(schema.promotions.id, id))
+      .returning();
+
+    if (!updatedPromotion) {
+      throw new Error('Promotion not found');
+    }
+
+    return {
+      id: updatedPromotion.id,
+      name: updatedPromotion.name,
+      description: updatedPromotion.description,
+      startDate: updatedPromotion.start_date,
+      endDate: updatedPromotion.end_date,
+      isActive: updatedPromotion.isActive,
+    };
+  }
+
+  async deletePromotion(id: string): Promise<void> {
+    const [deletedPromotion] = await this.db
+      .delete(schema.promotions)
+      .where(eq(schema.promotions.id, id))
+      .returning();
+
+    if (!deletedPromotion) {
+      throw new Error('Promotion not found');
+    }
+  }
 }

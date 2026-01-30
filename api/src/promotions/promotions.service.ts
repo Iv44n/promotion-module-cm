@@ -20,4 +20,15 @@ export class PromotionsService {
   ): Promise<PromotionResponseDTO> {
     return await this.promotionsRepository.createPromotion(promotion);
   }
+
+  async togglePromotionStatus(
+    id: string,
+    isActive: boolean,
+  ): Promise<PromotionResponseDTO> {
+    return await this.promotionsRepository.togglePromotionStatus(id, isActive);
+  }
+
+  async deletePromotion(id: string): Promise<void> {
+    return await this.promotionsRepository.deletePromotion(id);
+  }
 }

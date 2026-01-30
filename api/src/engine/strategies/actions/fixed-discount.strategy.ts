@@ -36,7 +36,6 @@ export class FixedDiscountStrategy implements PromotionActionStrategy {
     };
   }
 
- 
   private getApplicableSubtotal(
     cart: Cart,
     conditions?: PromotionConditionInfo[],
@@ -49,7 +48,8 @@ export class FixedDiscountStrategy implements PromotionActionStrategy {
       return cart.subtotal;
     }
 
-    const { categoryId } = categoryCondition.configuration as TargetCategoryConfig;
+    const { categoryId } =
+      categoryCondition.configuration as TargetCategoryConfig;
 
     if (!categoryId) {
       return cart.subtotal;
