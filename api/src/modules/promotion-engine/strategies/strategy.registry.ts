@@ -4,7 +4,11 @@ import {
 } from '@/database/drizzle.schema';
 import { PromotionConditionStrategy } from './conditions/base-condition.strategy';
 import { PromotionActionStrategy } from './actions/base-action.strategy';
+import { Injectable } from '@nestjs/common';
+import { TargetCategoryStrategy } from './conditions/target-category.strategy';
+import { PercentageDiscountStrategy } from './actions/percentage-discount.strategy';
 
+@Injectable()
 export class StrategyRegistry {
   private conditionStrategies: Map<
     PromotionConditionType,
@@ -15,6 +19,9 @@ export class StrategyRegistry {
   constructor() {
     this.conditionStrategies = new Map();
     this.actionStrategies = new Map();
+
+    this.registerConditionStrategy(new TargetCategoryStrategy());
+    this.registerActionStrategy(new PercentageDiscountStrategy());
   }
 
   registerConditionStrategy(strategy: PromotionConditionStrategy): void {

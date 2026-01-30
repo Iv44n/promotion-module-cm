@@ -19,4 +19,8 @@ export const conditionSchema = z.discriminatedUnion('conditionType', [
   minAmountConditionSchema,
 ]);
 
+export type TargetCategoryCondition = z.infer<
+  typeof targetCategoryConditionSchema
+>;
+export type MinAmountCondition = z.infer<typeof minAmountConditionSchema>;
 export type Condition = z.infer<typeof conditionSchema>;

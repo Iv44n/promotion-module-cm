@@ -19,4 +19,8 @@ export const actionSchema = z.discriminatedUnion('actionType', [
   fixedDiscountActionSchema,
 ]);
 
+export type PercentageDiscountAction = z.infer<
+  typeof percentageDiscountActionSchema
+>;
+export type FixedDiscountAction = z.infer<typeof fixedDiscountActionSchema>;
 export type Action = z.infer<typeof actionSchema>;
