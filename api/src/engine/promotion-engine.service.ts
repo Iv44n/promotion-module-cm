@@ -19,9 +19,12 @@ export class PromotionEngineService {
   async evaluatePromotions(cart: Cart): Promise<PromotionResult> {
     const appliedDiscounts: AppliedDiscount[] = [];
 
+    console.log(cart);
     const activePromotions =
       await this.promotionRepository.getActivePromotions();
-    this.logger.log(`Found ${activePromotions.length} active promotions`);
+    console.log(activePromotions);
+
+    console.log('PROMOCIONES ACAAAAAAAAAAAAAA', activePromotions);
 
     for (const promotion of activePromotions) {
       const isValid = this.validatePromotionConditions(cart, promotion);
@@ -67,6 +70,12 @@ export class PromotionEngineService {
         return false;
       }
 
+      console.log('>>> CONDITION CONFIG:', JSON.stringify(condition, null, 2));
+      console.log('>>> CART SUBTOTAL:', cart.subtotal);
+      console.log(
+        '>>> CART CATEGORIES:',
+        cart.items.map((i) => i.categoryId),
+      );
       const isValid = strategy.validate(cart, condition.configuration);
       if (!isValid) {
         this.logger.debug(

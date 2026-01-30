@@ -16,6 +16,7 @@ import { ConditionStrategyFactory, ActionStrategyFactory } from './factories';
 
 import { PromotionEngineRepository } from './promotion-engine.repository';
 import { PromotionEngineService } from './promotion-engine.service';
+import { PromotionEngineController } from './promotion-engine.controller';
 
 @Module({
   providers: [
@@ -49,6 +50,7 @@ import { PromotionEngineService } from './promotion-engine.service';
     PromotionEngineRepository,
     PromotionEngineService,
   ],
+  controllers: [PromotionEngineController],
   exports: [PromotionEngineService],
 })
 export class PromotionEngineModule {}
