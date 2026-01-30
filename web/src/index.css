@@ -1,2 +1,110 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+/* biome-ignore lint/suspicious/noUnknownAtRules: Tailwind directives */
+@tailwind base;
+/* biome-ignore lint/suspicious/noUnknownAtRules: Tailwind directives */
+@tailwind components;
+/* biome-ignore lint/suspicious/noUnknownAtRules: Tailwind directives */
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 220 26% 14%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 26% 14%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 26% 14%;
+
+    --primary: 181 69% 42%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 20% 96%;
+    --secondary-foreground: 220 26% 14%;
+
+    --muted: 210 20% 96%;
+    --muted-foreground: 215 19% 51%;
+
+    --accent: 181 69% 42%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 181 69% 42%;
+
+    --radius: 0.5rem;
+
+    /* Brand Colors */
+    --brand-teal: 181 69% 42%;
+    --brand-orange: 20 100% 50%;
+    --brand-orange-hover: 18 100% 45%;
+    --text-dark: 220 26% 14%;
+    --text-gray: 215 19% 51%;
+
+    /* Wizard specific */
+    --step-active: 181 69% 42%;
+    --step-complete: 181 69% 42%;
+    --step-inactive: 214 32% 91%;
+    --connector-line: 214 32% 85%;
+  }
+
+  .dark {
+    --background: 220 26% 8%;
+    --foreground: 210 40% 98%;
+
+    --card: 220 26% 12%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 220 26% 12%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 181 69% 42%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 181 69% 42%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 181 69% 42%;
+
+    --brand-teal: 181 69% 42%;
+    --brand-orange: 20 100% 50%;
+    --brand-orange-hover: 18 100% 45%;
+    --text-dark: 210 40% 98%;
+    --text-gray: 215 20% 65%;
+
+    --step-active: 181 69% 42%;
+    --step-complete: 181 69% 42%;
+    --step-inactive: 217 33% 25%;
+    --connector-line: 217 33% 25%;
+  }
+}
+
+@layer base {
+  * {
+    /* biome-ignore lint/suspicious/noUnknownAtRules: Tailwind directives */
+    @apply border-border;
+  }
+
+  body {
+    /* biome-ignore lint/suspicious/noUnknownAtRules: Tailwind directives */
+    @apply bg-background text-foreground;
+  }
+}
