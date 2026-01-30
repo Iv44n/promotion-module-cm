@@ -90,28 +90,17 @@ export class PromotionsRepository {
     });
   }
 
-  async togglePromotionStatus(id: string, isActive: boolean): Promise<{ isActive: boolean }> {
-    const result = await this.db
-      .update(schema.promotions)
-      .set({ isActive, updated_at: new Date() })
-      .where(eq(schema.promotions.id, id))
-      .returning({ isActive: schema.promotions.isActive });
+  async deletePromotion(promotionId: string) {
+    const { deletedPromotionId } = await this.db
+      .delete(promotions)
+      .where(eq(promotions.id, promotionId))
+      .returning({ deletedPromotionId: promotions.id })
+      .then((result) => result[0]);
 
-    if (result.length === 0) {
+    if (!deletedPromotionId) {
       throw new Error('Promotion not found');
     }
 
-    return { isActive: result[0].isActive };
-  }
-
-  async deletePromotion(id: string): Promise<void> {
-    const [deletedPromotion] = await this.db
-      .delete(schema.promotions)
-      .where(eq(schema.promotions.id, id))
-      .returning();
-
-    if (!deletedPromotion) {
-      throw new Error('Promotion not found');
-    }
+    return deletedPromotionId;
   }
 }

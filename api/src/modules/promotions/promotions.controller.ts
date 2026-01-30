@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import {
   type CreatePromotionRequestDto,
   createPromotionRequestDto,
@@ -24,18 +24,13 @@ export class PromotionsController {
     return await this.promotionsService.createPromotion(promotion);
   }
 
-  @Patch(':id/status')
-  async updatePromotionStatus(
-    @Param('id') id: string,
-    @Body() body: UpdatePromotionStatusDto,
-  ): Promise<PromotionStatusResponseDto> {
-    const { isActive } = updatePromotionStatusDto.parse(body);
-    return await this.promotionsService.togglePromotionStatus(id, isActive);
-  }
+  @Delete(':promotionId')
+  async deletePromotion(@Param('promotionId') promotionId: string) {
+    const deletedPromotionId =
+      await this.promotionsService.deletePromotion(promotionId);
 
-  @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  async deletePromotion(@Param('id') id: string): Promise<void> {
-    return await this.promotionsService.deletePromotion(id);
+    return {
+      message: `Promotion with id ${deletedPromotionId} was deleted successfully`,
+    };
   }
 }
