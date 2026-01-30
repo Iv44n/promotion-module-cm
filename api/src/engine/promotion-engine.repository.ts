@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { NeonHttpDatabase } from 'drizzle-orm/neon-http';
-import { and, eq, lte, gte } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import * as schema from '../database/drizzle.schema';
 import { DRIZZLE_TOKEN } from '../database/drizzle.provider';
 
@@ -29,57 +29,45 @@ export class PromotionEngineRepository {
     @Inject(DRIZZLE_TOKEN)
     private readonly db: NeonHttpDatabase<typeof schema>,
   ) {}
-
   async getActivePromotions(): Promise<PromotionWithDetails[]> {
     const now = new Date();
 
-    const activePromotions = await this.db
-      .select({
-        id: schema.promotions.id,
-        name: schema.promotions.name,
-        description: schema.promotions.description,
-        isActive: schema.promotions.isActive,
-        startDate: schema.promotions.start_date,
-        endDate: schema.promotions.end_date,
-      })
-      .from(schema.promotions)
-      .where(
-        and(
-          eq(schema.promotions.isActive, true),
-          lte(schema.promotions.start_date, now),
-          gte(schema.promotions.end_date, now),
-        ),
-      );
-
-    const promotionsWithDetails: PromotionWithDetails[] = [];
-
-    for (const promotion of activePromotions) {
-      const conditions = await this.db
-        .select({
-          id: schema.promotionConditions.id,
-          conditionType: schema.promotionConditions.condition_type,
-          configuration: schema.promotionConditions.configuration,
-        })
-        .from(schema.promotionConditions)
-        .where(eq(schema.promotionConditions.promotion_id, promotion.id));
-
-      const actions = await this.db
-        .select({
-          id: schema.promotionActions.id,
-          actionType: schema.promotionActions.action_type,
-          configuration: schema.promotionActions.configuration,
-        })
-        .from(schema.promotionActions)
-        .where(eq(schema.promotionActions.promotion_id, promotion.id));
-
-      promotionsWithDetails.push({
-        ...promotion,
-        conditions,
-        actions,
+    try {
+      const results = await this.db.query.promotions.findMany({
+        where: eq(schema.promotions.isActive, true),
+        with: {
+          promotionConditions: true,
+          promotionActions: true,
+        },
       });
-    }
 
-    return promotionsWithDetails;
+      if (!results || results.length === 0) {
+        console.log('No se encontraron promociones activas en la DB');
+        return [];
+      }
+
+      return results.map((p) => ({
+        id: p.id,
+        name: p.name,
+        description: p.description,
+        isActive: p.isActive,
+        startDate: p.start_date,
+        endDate: p.end_date,
+        conditions: p.promotionConditions.map((c) => ({
+          id: c.id,
+          conditionType: c.condition_type,
+          configuration: c.configuration,
+        })),
+        actions: p.promotionActions.map((a) => ({
+          id: a.id,
+          actionType: a.action_type,
+          configuration: a.configuration,
+        })),
+      }));
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
   }
 
   async getPromotionById(
