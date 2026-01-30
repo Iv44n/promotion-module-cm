@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { GlobalExceptionFilter } from './exceptions/http-exception.filter';
-import { ZodExceptionFilter } from './exceptions/zod-exception.filter';
+import { GlobalExceptionFilter } from './common/filters/http-exception.filter';
+import { ZodExceptionFilter } from './common/filters/zod-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
