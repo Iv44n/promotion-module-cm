@@ -71,13 +71,13 @@ export class PromotionsRepository {
       await tx.insert(schema.promotionConditions).values({
         promotion_id: createdPromotion.id,
         condition_type: promotion.condition.conditionType,
-        configuration: promotion.condition,
+        configuration: promotion.condition.configuration,
       });
 
       await tx.insert(schema.promotionActions).values({
         promotion_id: createdPromotion.id,
         action_type: promotion.action.actionType,
-        configuration: promotion.action,
+        configuration: promotion.action.configuration,
       });
 
       return {

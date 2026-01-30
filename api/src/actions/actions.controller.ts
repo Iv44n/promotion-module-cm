@@ -6,7 +6,7 @@ export class ActionsController {
   constructor(private readonly actionsService: ActionsService) {}
 
   @Get()
-  async getAllActions() {
+  getAllActions() {
     return this.actionsService.getActionTypes();
   }
 }
