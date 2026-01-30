@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import {
   serial,
   text,
@@ -57,3 +58,28 @@ export const promotionActions = pgTable('promotion_actions', {
   action_type: promotionActionsTypesEnum('action_type').notNull(),
   configuration: jsonb('configuration').notNull(),
 });
+
+export const promotionsRelations = relations(promotions, ({ many }) => ({
+  promotionConditions: many(promotionConditions),
+  promotionActions: many(promotionActions),
+}));
+
+export const promotionConditionsRelations = relations(
+  promotionConditions,
+  ({ one }) => ({
+    promotion: one(promotions, {
+      fields: [promotionConditions.promotion_id],
+      references: [promotions.id],
+    }),
+  }),
+);
+
+export const promotionActionsRelations = relations(
+  promotionActions,
+  ({ one }) => ({
+    promotion: one(promotions, {
+      fields: [promotionActions.promotion_id],
+      references: [promotions.id],
+    }),
+  }),
+);
