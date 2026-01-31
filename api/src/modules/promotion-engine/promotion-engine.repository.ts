@@ -3,6 +3,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from '@/database/drizzle.schema';
 import { and, eq } from 'drizzle-orm';
+import { PromotionNotFoundError } from '@/common/filters/errors';
+import { PromotionWithoutRulesError } from './errors';
 
 @Injectable()
 export class PromotionEngineRepository {
@@ -38,15 +40,13 @@ export class PromotionEngineRepository {
     const record = result[0];
 
     if (!record?.promotion) {
-      console.log(`Promoción activa con id "${promotionId}" no encontrada`);
-      throw new Error(`Promoción activa con id "${promotionId}" no encontrada`);
+      throw new PromotionNotFoundError(
+        `Promoción activa con id "${promotionId}" no encontrada`,
+      );
     }
 
     if (!record?.actions || !record?.conditions) {
-      console.log(
-        `Promoción activa con id "${promotionId}" no tiene acciones o condiciones`,
-      );
-      throw new Error(
+      throw new PromotionWithoutRulesError(
         `Promoción activa con id "${promotionId}" no tiene acciones o condiciones`,
       );
     }

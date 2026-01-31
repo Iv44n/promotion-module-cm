@@ -7,6 +7,10 @@ import {
   type CartDto,
 } from './dto/request/apply-promotion.dto';
 import type { ApplyPromotionResultDto } from './dto/response/apply-promotion-result.dto';
+import {
+  InvalidPromotionActionError,
+  InvalidPromotionConditionError,
+} from './errors';
 
 @Injectable()
 export class PromotionEngineService {
@@ -23,56 +27,53 @@ export class PromotionEngineService {
         applyPromotionDto.promotionId,
       );
 
-    const {
-      data: promotionCondition,
-      success,
-      error,
-    } = conditionSchema.safeParse({
+    const conditionParsed = conditionSchema.safeParse({
       conditionType: promotion.condition.condition_type,
       configuration: promotion.condition.configuration,
     });
 
-    if (!success) {
+    if (!conditionParsed.success) {
+      throw new InvalidPromotionConditionError(
+        `Invalid promotion condition: ${conditionParsed.error.message}`,
+      );
+    }
+
+    const conditionResult = this.verifyConditions(
+      conditionParsed.data,
+      applyPromotionDto.cart,
+    );
+
+    if (!conditionResult) {
       return {
         status: 'NOT_APPLICABLE',
         promotionId: applyPromotionDto.promotionId,
-        message: error.message,
+        message: 'Condition not met',
         originalAmount: applyPromotionDto.cart.totalAmount,
         finalAmount: applyPromotionDto.cart.totalAmount,
         discount: 0,
       };
     }
 
-    const conditionResult = this.verifyConditions(
-      promotionCondition,
-      applyPromotionDto.cart,
-    );
+    const actionParsed = actionSchema.safeParse({
+      actionType: promotion.action.action_type,
+      configuration: promotion.action.configuration,
+    });
 
-    if (conditionResult) {
-      const promotionAction = actionSchema.parse({
-        actionType: promotion.action.action_type,
-        configuration: promotion.action.configuration,
-      });
-
-      const result = this.applyActions(promotionAction, applyPromotionDto.cart);
-
-      return {
-        status: 'APPLIED',
-        promotionId: applyPromotionDto.promotionId,
-        message: result.message,
-        originalAmount: applyPromotionDto.cart.totalAmount,
-        finalAmount: result.finalAmount,
-        discount: result.discount,
-      };
+    if (!actionParsed.success) {
+      throw new InvalidPromotionActionError(
+        `Invalid promotion action: ${actionParsed.error.message}`,
+      );
     }
 
+    const result = this.applyActions(actionParsed.data, applyPromotionDto.cart);
+
     return {
-      status: 'NOT_APPLICABLE',
+      status: 'APPLIED',
       promotionId: applyPromotionDto.promotionId,
-      message: 'Condition not met',
+      message: result.message,
       originalAmount: applyPromotionDto.cart.totalAmount,
-      finalAmount: applyPromotionDto.cart.totalAmount,
-      discount: 0,
+      finalAmount: result.finalAmount,
+      discount: result.discount,
     };
   }
 

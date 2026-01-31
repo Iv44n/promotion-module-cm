@@ -1,7 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
-import * as schema from './drizzle.schema'; // 1. IMPORTA TU ESQUEMA AQUÍ
+import * as schema from './drizzle.schema';
 
 export const DRIZZLE_TOKEN = 'DRIZZLE_TOKEN';
 const DATABASE_URL = 'DATABASE_URL';

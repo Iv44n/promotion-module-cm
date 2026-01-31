@@ -9,6 +9,10 @@ import { TargetCategoryStrategy } from './conditions/target-category.strategy';
 import { PercentageDiscountStrategy } from './actions/percentage-discount.strategy';
 import { FixedDiscountStrategy } from './actions/fixed-discount.strategy';
 import { MinAmountStrategy } from './conditions/min-amount.strategy';
+import {
+  ActionStrategyNotFoundError,
+  ConditionStrategyNotFoundError,
+} from '../errors';
 
 @Injectable()
 export class StrategyRegistry {
@@ -41,7 +45,7 @@ export class StrategyRegistry {
   ): PromotionConditionStrategy {
     const strategy = this.conditionStrategies.get(type);
     if (!strategy) {
-      throw new Error(`No strategy found for type: ${type}`);
+      throw new ConditionStrategyNotFoundError(type);
     }
     return strategy;
   }
@@ -49,7 +53,7 @@ export class StrategyRegistry {
   getActionStrategy(type: PromotionActionType): PromotionActionStrategy {
     const strategy = this.actionStrategies.get(type);
     if (!strategy) {
-      throw new Error(`No strategy found for type: ${type}`);
+      throw new ActionStrategyNotFoundError(type);
     }
     return strategy;
   }

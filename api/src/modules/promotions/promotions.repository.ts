@@ -11,6 +11,7 @@ import {
 import { PromotionResponseDTO } from './dto/response/promotion-response.dto';
 import { CreatePromotionRequestDto } from './dto/request/create-promotion.dto';
 import { UpdatePromotionRequestDto } from './dto/request/update-promotion.dto';
+import { PromotionNotFoundError } from '@/common/filters/errors';
 
 @Injectable()
 export class PromotionsRepository {
@@ -33,23 +34,21 @@ export class PromotionsRepository {
   }
 
   async getPromotionById(id: string): Promise<PromotionResponseDTO> {
-    const [promotionInDB] = await this.db
-      .select()
-      .from(promotions)
-      .where(eq(promotions.id, id))
-      .limit(1);
+    const promotion = await this.db.query.promotions.findFirst({
+      where: eq(promotions.id, id),
+    });
 
-    if (!promotionInDB) {
-      throw new Error('Promotion not found');
+    if (!promotion) {
+      throw new PromotionNotFoundError(`Promotion not found: ${id}`);
     }
 
     return {
-      id: promotionInDB.id,
-      name: promotionInDB.name,
-      description: promotionInDB.description,
-      startDate: promotionInDB.start_date,
-      endDate: promotionInDB.end_date,
-      isActive: promotionInDB.isActive,
+      id: promotion.id,
+      name: promotion.name,
+      description: promotion.description,
+      startDate: promotion.start_date,
+      endDate: promotion.end_date,
+      isActive: promotion.isActive,
     };
   }
 
@@ -92,17 +91,16 @@ export class PromotionsRepository {
   }
 
   async deletePromotion(promotionId: string) {
-    const { deletedPromotionId } = await this.db
+    const promotionDeleted = await this.db
       .delete(promotions)
       .where(eq(promotions.id, promotionId))
-      .returning({ deletedPromotionId: promotions.id })
-      .then((result) => result[0]);
+      .returning({ deletedPromotionId: promotions.id });
 
-    if (!deletedPromotionId) {
-      throw new Error('Promotion not found');
+    if (promotionDeleted.length === 0) {
+      throw new PromotionNotFoundError(`Promotion not found: ${promotionId}`);
     }
 
-    return deletedPromotionId;
+    return promotionDeleted[0].deletedPromotionId;
   }
 
   async updatePromotion(promotionId: string, data: UpdatePromotionRequestDto) {
@@ -113,13 +111,12 @@ export class PromotionsRepository {
         updated_at: new Date(),
       })
       .where(eq(promotions.id, promotionId))
-      .returning()
-      .then((result) => result[0]);
+      .returning();
 
-    if (!updatedPromotion) {
-      throw new Error('Promotion not found');
+    if (updatedPromotion.length === 0) {
+      throw new PromotionNotFoundError(`Promotion not found: ${promotionId}`);
     }
 
-    return updatedPromotion;
+    return updatedPromotion[0];
   }
 }
