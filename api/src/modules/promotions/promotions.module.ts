@@ -5,9 +5,16 @@ import { PromotionsService } from './promotions.service';
 import { PromotionsRepository } from './promotions.repository';
 import { MetadataController } from './metadata/metadata.controller';
 import { MetadataService } from './metadata/metadata.service';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
-  imports: [DrizzleModule],
+  imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', '..', '..', 'public'),
+    }),
+    DrizzleModule,
+  ],
   controllers: [PromotionsController, MetadataController],
   providers: [PromotionsService, PromotionsRepository, MetadataService],
 })

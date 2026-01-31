@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrito de Compras - Promotion Module</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <h1>🛒 Carrito de Compras</h1>
+      <p class="subtitle">Motor de Promociones Demo</p>
+    </header>
+
+    <main class="main-content">
+      <!-- Products Section -->
+      <section class="products-section">
+        <h2>📦 Productos</h2>
+        <div class="products-grid" id="products-grid">
+          <!-- Products will be rendered here -->
+        </div>
+      </section>
+
+      <!-- Cart Section -->
+      <section class="cart-section">
+        <div class="cart-container">
+          <h2>🛍️ Mi Carrito</h2>
+          <div class="cart-items" id="cart-items">
+            <p class="empty-cart">Tu carrito está vacío</p>
+          </div>
+          <div class="cart-summary">
+            <div class="summary-row">
+              <span>Subtotal:</span>
+              <span id="subtotal">S/ 0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Promotions Section -->
+        <div class="promotions-container">
+          <h2>🎉 Promociones</h2>
+          <button class="btn btn-secondary" id="load-promotions">
+            Cargar Promociones
+          </button>
+          <div class="promotions-list" id="promotions-list">
+            <!-- Promotions will be rendered here -->
+          </div>
+        </div>
+
+        <!-- Checkout Section -->
+        <div class="checkout-container">
+          <button class="btn btn-primary" id="checkout-btn" disabled>
+            Aplicar Promoción y Checkout
+          </button>
+          <div class="checkout-result" id="checkout-result">
+            <!-- Result will be rendered here -->
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
