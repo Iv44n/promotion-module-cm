@@ -4,7 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 // Asegúrate de que este tipo coincida con el que exportas en tu API o Schema
 import type { PromotionListItem } from "@/api/promotions";
-import { useDeletePromotion, usePromotions } from "@/hooks/usePromotions";
+import {
+	useDeletePromotion,
+	usePromotions,
+	useUpdatePromotion,
+} from "@/hooks/usePromotions";
 import { DashboardHeader } from "./DashboardHeader";
 import { DashboardToolbar } from "./DashboardToolbar";
 import { DeleteConfirmDialog } from "./DeleteConfirmDialog";
@@ -17,7 +21,7 @@ export const PromotionsDashboard = () => {
 	// HOOKS: Datos del servidor
 	const { data: promotions, isLoading, isError } = usePromotions();
 	const deleteMutation = useDeletePromotion();
-
+	const updateMutation = useUpdatePromotion(); // <--- Inicializamos el hook
 	// ESTADO: UI Local
 	const [searchQuery, setSearchQuery] = useState("");
 	const [statusFilter, setStatusFilter] = useState("all");
@@ -46,14 +50,19 @@ export const PromotionsDashboard = () => {
 		});
 	}, [promotions, searchQuery, statusFilter]);
 
-	// ACCIONES
+
+// --- ACCIONES CONECTADAS ---
+
+	// 1. Activar / Desactivar (PATCH)
 	const handleToggleStatus = (id: string, active: boolean) => {
-		console.log("Toggle status:", id, active);
-		toast.info("Funcionalidad de activar/desactivar en desarrollo 🚧");
+		// Llamamos al hook con el ID y el dato que cambió
+		updateMutation.mutate({
+			id,
+			data: { isActive: active },
+		});
 	};
 
 	const handleEdit = (promotion: PromotionListItem) => {
-		// Redirige al wizard en modo edición (requerirá configurar la ruta /edit/:id)
 		navigate(`/edit/${promotion.id}`);
 	};
 
@@ -66,6 +75,7 @@ export const PromotionsDashboard = () => {
 		setDeleteDialogOpen(true);
 	};
 
+	// 2. Confirmar Eliminación (DELETE)
 	const handleConfirmDelete = () => {
 		if (promotionToDelete) {
 			deleteMutation.mutate(promotionToDelete.id);
@@ -73,7 +83,6 @@ export const PromotionsDashboard = () => {
 			setPromotionToDelete(null);
 		}
 	};
-
 	// RENDERIZADO CONDICIONAL (Loading/Error)
 	if (isLoading) {
 		return (

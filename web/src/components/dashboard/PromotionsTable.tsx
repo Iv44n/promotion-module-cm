@@ -19,14 +19,14 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 // Importamos el tipo real que definimos para el backend
-import type { PromotionBackendDTO } from "@/lib/promotionSchema";
+import type { PromotionListItem } from "@/lib/promotionSchema";
 
 interface PromotionsTableProps {
-	promotions: PromotionBackendDTO[];
+	promotions: PromotionListItem[];
 	onToggleStatus: (id: string, active: boolean) => void;
-	onEdit: (promotion: PromotionBackendDTO) => void;
-	onDuplicate: (promotion: PromotionBackendDTO) => void;
-	onDelete: (promotion: PromotionBackendDTO) => void;
+	onEdit: (promotion: PromotionListItem) => void;
+	onDuplicate: (promotion: PromotionListItem) => void;
+	onDelete: (promotion: PromotionListItem) => void;
 }
 
 export const PromotionsTable = ({
