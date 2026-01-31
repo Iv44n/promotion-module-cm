@@ -5,5 +5,8 @@ import { Condition } from '../../rules';
 export interface PromotionConditionStrategy {
   readonly type: PromotionConditionType;
 
-  validate(cart: CartDto, promotionCondition: Condition): boolean;
+  validate(
+    cart: CartDto,
+    promotionCondition: Condition,
+  ): { isValid: boolean; message: string };
 }

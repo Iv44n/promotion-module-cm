@@ -9,10 +9,19 @@ export class TargetCategoryStrategy implements PromotionConditionStrategy {
   validate(
     cart: CartDto,
     promotionCondition: TargetCategoryCondition,
-  ): boolean {
+  ): { isValid: boolean; message: string } {
     const { items } = cart;
     const { categoryId } = promotionCondition.configuration;
 
-    return items.some((item) => item.categoryId === categoryId);
+    const hasItemsInCategory = items.some(
+      (item) => item.categoryId === categoryId,
+    );
+
+    return {
+      isValid: hasItemsInCategory,
+      message: hasItemsInCategory
+        ? 'Condición cumplida'
+        : 'El carrito no contiene productos de la categoría objetivo',
+    };
   }
 }

@@ -43,11 +43,11 @@ export class PromotionEngineService {
       applyPromotionDto.cart,
     );
 
-    if (!conditionResult) {
+    if (!conditionResult.isValid) {
       return {
         status: 'NOT_APPLICABLE',
         promotionId: applyPromotionDto.promotionId,
-        message: 'Condition not met',
+        message: conditionResult.message,
         originalAmount: applyPromotionDto.cart.totalAmount,
         finalAmount: applyPromotionDto.cart.totalAmount,
         discount: 0,
@@ -77,7 +77,7 @@ export class PromotionEngineService {
     };
   }
 
-  private verifyConditions(condition: Condition, card: CartDto): boolean {
+  private verifyConditions(condition: Condition, card: CartDto) {
     const conditionStrategy = this.strategyRegistry.getConditionStrategy(
       condition.conditionType,
     );

@@ -6,13 +6,23 @@ import { PromotionConditionType } from '@/database/drizzle.schema';
 export class MinAmountStrategy implements PromotionConditionStrategy {
   readonly type: PromotionConditionType = 'MIN_AMOUNT';
 
-  validate(cart: CartDto, condition: MinAmountCondition): boolean {
+  validate(
+    cart: CartDto,
+    condition: MinAmountCondition,
+  ): { isValid: boolean; message: string } {
     const { amount } = condition.configuration;
 
     if (typeof amount !== 'number' || amount < 0) {
-      return false;
+      return { isValid: false, message: 'Monto mínimo inválido' };
     }
 
-    return cart.totalAmount >= amount;
+    const amountIsNotEnough = cart.totalAmount < amount;
+
+    return {
+      isValid: !amountIsNotEnough,
+      message: amountIsNotEnough
+        ? `El monto total del carrito es menor al monto mínimo (${amount})`
+        : 'Condición cumplida',
+    };
   }
 }
